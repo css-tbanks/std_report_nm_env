@@ -5,6 +5,7 @@ from functions.benefit import *
 from functions.main import *
 from functions.static import *
 from false_handling import *
+from grexp import *
 
 
 def bill_master():
@@ -42,9 +43,18 @@ def moop_master():
 # duct = duct_master()
 # moop = moop_master()
 
+def grexp_master(benefits, duct, moop):
+    result = {}
+    result['benefits'] = use_grexp(benefits, "bill")
+    result['deductible'] = use_grexp(duct, "duct")
+    result['moop'] = use_grexp(moop, "moop")
+    return result
+
 def master():
     benefits = bill_master()
     duct = duct_master()
     moop = moop_master()
+    result = grexp_master(benefits, duct, moop)
+    print(result)
     gen_excel(benefits, duct, moop)
     print('done')

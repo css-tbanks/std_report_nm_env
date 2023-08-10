@@ -9,6 +9,9 @@ import sys
 import great_expectations as gx
 from great_expectations.core.batch import RuntimeBatchRequest
 
+from false_handling import *
+from functions.main import *
+
 # def start_grexp(path):
 context = gx.get_context()
 
@@ -64,7 +67,6 @@ def use_grexp(df, table_name):
     if table_name == 'bill':
 
         
-
         validator.expect_column_to_exist("benefit_name")
         validator.expect_column_to_exist("variant_id")
         validator.expect_column_to_exist("carrier_id")
@@ -77,12 +79,14 @@ def use_grexp(df, table_name):
         validator.expect_column_to_exist("match_result")
         validator.expect_column_to_exist("Result Description")
 
+        df = bene_result_description(df)
+        df = shrink_df(df, 'benefits')
+
 
 
        
     elif table_name == 'duct':
 
-        
 
         validator.expect_column_to_exist("benefit_name")
         validator.expect_column_to_exist("variant_id")
@@ -95,10 +99,13 @@ def use_grexp(df, table_name):
         validator.expect_column_to_exist("match_result")
         validator.expect_column_to_exist("Result Description")
 
+        #-----------------------------------
+
+        df = static_result_description(df, 'Deductible')
+        df = shrink_df(df, 'Deductible')
        
     elif table_name == 'moop':
 
-        
 
         validator.expect_column_to_exist("benefit_name")
         validator.expect_column_to_exist("variant_id")
@@ -111,10 +118,14 @@ def use_grexp(df, table_name):
         validator.expect_column_to_exist("match_result")
         validator.expect_column_to_exist("Result Description")
 
+        #-----------------------------------
+
+        df = static_result_description(df, 'MOOP')
+        df = shrink_df(df, 'MOOP')
 
     result = validator.validate()
 
-    print(f'{table_name} has completed the validation process. Here are the results:')
+    # print(f'{table_name} has completed the validation process. Here are the results:')
 
     if not result["success"]:
         print("Validation failed!")
@@ -124,4 +135,4 @@ def use_grexp(df, table_name):
         result = True
     
 
-    return result
+    return df

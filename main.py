@@ -14,8 +14,8 @@ def bill_master():
     results = bene_match(results)
     # finished_bill = bene_excel(results)
     # recolor_sheets('Benefits')
-    results = bene_result_description(results)
-    results = shrink_df(results, 'benefits')
+    results = use_grexp(results, "bill")
+
     return results
 
 def duct_master():
@@ -24,8 +24,8 @@ def duct_master():
     results = match_results(results,'Deductible')
     # finished_duct = duct_excel(results)
     # recolor_sheets('Deductible')
-    results = static_result_description(results, 'Deductible')
-    results = shrink_df(results, 'Deductible')
+    results = use_grexp(results, "duct")
+
     return results
 
 def moop_master():
@@ -34,27 +34,30 @@ def moop_master():
     results = match_results(results, 'MOOP')
     # finished_duct = excel_gen(results, 'MOOP')
     # recolor_sheets('MOOP')
-    results = static_result_description(results, 'MOOP')
-    results = shrink_df(results, 'MOOP')
+    results = use_grexp(results, "moop")
 
     return results
 
-# bill = bill_master()
-# duct = duct_master()
-# moop = moop_master()
-
-def grexp_master(benefits, duct, moop):
-    result = {}
-    result['benefits'] = use_grexp(benefits, "bill")
-    result['deductible'] = use_grexp(duct, "duct")
-    result['moop'] = use_grexp(moop, "moop")
-    return result
 
 def master():
     benefits = bill_master()
     duct = duct_master()
     moop = moop_master()
-    result = grexp_master(benefits, duct, moop)
-    print(result)
+    # result = grexp_master(benefits, duct, moop)
+    # print(result)
     gen_excel(benefits, duct, moop)
-    print('done')
+
+
+
+
+
+print('done')
+# bill = bill_master()
+# duct = duct_master()
+# moop = moop_master()
+# def grexp_master(benefits, duct, moop):
+#     result = {}
+#     result['benefits'] = use_grexp(benefits, "bill")
+#     result['deductible'] = use_grexp(duct, "duct")
+#     result['moop'] = use_grexp(moop, "moop")
+#     return result
